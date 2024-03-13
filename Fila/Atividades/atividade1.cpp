@@ -1,10 +1,3 @@
-///// Atividade 1, fazer uma fila sem usar o marcador u, somente p e n /////
-/**
- * @author Lucas Sobral
- * @brief Escreva uma implementação alternativa de Fila Limitada via Vetor, na qual o índice do último seja substituído pela quantidade "n" de elementos presentes na fila. Os demais campos devem permanecer, de forma que os campos da nova implementação serão: "primeiro" (índice do primeiro elemento), "n" (quantidade de elementos correntemente armazenados) e "vetor" (vetor para os elementos da fila).
- * @bug Algoritmo incompleto, a função vazia está errada, como fazer o n detectar que esta vazia?
- */
-
 #include <iostream>
 
 using namespace std;
@@ -15,13 +8,13 @@ const int Max_valor = 5;
 class Fila
 {
 private:
-    int p, n, c = 1;
+    int p, n;
     tipoItem *estrutura = new tipoItem[Max_valor];
 
 public:
     Fila()
     {
-        p = 0;
+        p = 0; // Inicialmente o primeiro elemento está na posição 0
         n = 0;
     }
 
@@ -29,6 +22,7 @@ public:
     {
         delete[] estrutura;
     }
+
     bool vazia()
     {
         return (n == 0);
@@ -44,13 +38,12 @@ public:
         if (cheia())
         {
             cout << "Fila cheia" << endl;
+            return;
         }
-        else if(c % 2 == 0 )
-        {
-            cout << "Item adicionado à fila: " << item << endl;
-            estrutura[(p + n) % Max_valor] = item;
-            n++;
-        }
+
+        int posicao = (p + n) % Max_valor; // Calcula a posição correta para inserir
+        estrutura[posicao] = item;
+        n++;
     }
 
     void desenfilar()
@@ -58,32 +51,28 @@ public:
         if (vazia())
         {
             cout << "Fila vazia" << endl;
+            return;
         }
-        else
-        {
-            cout << "Item removido: " << estrutura[p] << endl;
-            p = (p + 1) % Max_valor;
-            n--;
-        }
+
+        p = (p + 1) % Max_valor; // Atualiza o marcador para o próximo elemento
+        n--;
     }
+
     void imprimir()
     {
         if (vazia())
         {
             cout << "Fila vazia" << endl;
+            return;
         }
-        else
-        {
 
-            int i = p;
-            cout << "[ ";
-            do
-            {
-                cout << estrutura[i] << " ";
-                i = (i + 1) % Max_valor;
-            } while (i != (p + n) % Max_valor);
-            cout << " ]" << endl;
+        cout << "[ ";
+        for (int i = 0; i < n; i++)
+        {
+            int posicao = (p + i) % Max_valor; // Calcula a posição correta para imprimir
+            cout << estrutura[posicao] << " ";
         }
+        cout << "]" << endl;
     }
 };
 
@@ -116,6 +105,5 @@ int main()
         }
     } while (opcao != 0);
 
-    system("pause");
     return 0;
 }

@@ -14,12 +14,14 @@ typedef int Tipo_Var;
 class Fila
 {
 private:
-    int p,u;
+    int p,u,n;
     Tipo_Var* estrutura1;
     Tipo_Var* estrutura2;
 public:
-    Fila(/* args */);
+    Fila();
     ~Fila();
+    void inserir(Tipo_Var item);
+
 };
 
 
