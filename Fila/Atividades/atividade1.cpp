@@ -1,3 +1,9 @@
+/**
+ * @author Lucas e Rodrigo
+ * @brief Escreva uma implementação alternativa de Fila Limitada via Vetor, na qual o índice do último seja substituído pela quantidade "n" de elementos presentes na fila. Os demais campos devem permanecer, de forma que os campos da nova implementação serão: "primeiro" (índice do primeiro elemento), "n" (quantidade de elementos correntemente armazenados) e "vetor" (vetor para os elementos da fila).
+ * @brief Resolvida.
+*/
+
 #include <iostream>
 
 using namespace std;
@@ -41,8 +47,7 @@ public:
             return;
         }
 
-        int posicao = (p + n) % Max_valor; // Calcula a posição correta para inserir
-        estrutura[posicao] = item;
+        estrutura[(p + n) % Max_valor] = item;
         n++;
     }
 
@@ -51,11 +56,11 @@ public:
         if (vazia())
         {
             cout << "Fila vazia" << endl;
-            return;
+        }else{
+            p = (p + 1) % Max_valor; // Atualiza o marcador para o próximo elemento
+            n--;
         }
 
-        p = (p + 1) % Max_valor; // Atualiza o marcador para o próximo elemento
-        n--;
     }
 
     void imprimir()
