@@ -1,8 +1,8 @@
 /**
- * @author Lucas Sobral
- * @brief Implemente em C++ um conjunto limitado via vetor desordenado, conforme explicado em sala, com particular atenção ao procedimento de remoção (não realizando deslocamento dos elementos à direita do elemento removido). Inclua uma função vazio, que informe se o conjunto está ou não vazio. Inclua também uma função cheio, que informe se o conjunto está ou não cheio.
- *
- */
+ * @author Lucas
+ * @brief Conjunto desordenado
+ * @example vantagem: remover mais eficiente // desavantagem: nao tem busca binária
+*/
 
 #include <iostream>
 using namespace std;
@@ -19,8 +19,6 @@ private:
 public:
     Conjunto();
     ~Conjunto();
-    bool vazio();
-    bool cheio();
     bool pertence(TipoItem x);
     void inserir_novo(TipoItem x);
     void inserir_se_novo(TipoItem x);
@@ -37,12 +35,6 @@ Conjunto::~Conjunto()
 {
     delete[] estrutura;
 }
-bool Conjunto::vazio(){
-    return(n == 0);
-}
-bool Conjunto::cheio(){
-    return(n == Max_Itens);
-}
 bool Conjunto::pertence(TipoItem x)
 {
     for (int i = 0; i < n; i++)
@@ -56,7 +48,7 @@ bool Conjunto::pertence(TipoItem x)
 }
 void Conjunto::inserir_novo(TipoItem x)
 {
-    if (cheio())
+    if (n == Max_Itens)
     {
         cout << "Conjunto cheio" << endl;
     }
@@ -81,7 +73,7 @@ void Conjunto::inserir_se_novo(TipoItem x)
 }
 void Conjunto::remover(TipoItem x)
 {
-    if (vazio())
+    if (n == 0)
     {
         cout << "Conjunto vazio" << endl;
     }
