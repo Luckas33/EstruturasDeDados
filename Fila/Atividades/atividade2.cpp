@@ -1,7 +1,14 @@
 /**
  * @name Atividade 2
- * @author Lucas Sobral
+ * @author Lucas Sobral, João Rodrigo e Cearamor
  * @brief Escreva uma implementação alternativa de Fila Limitada, com capacidade para até 10 elementos armazenados simultaneamente, que utilize 2 vetores de 5 elementos. (Utilizar um único vetor de 10 elementos seria provavelmente mais simples, mas a proposta deste exercício é viabilizar a implementação num contexto em que algumas restrições sobre a memória disponível fossem estabelecidas previamente à implementação da estrutura.)
+ * 
+
+ [][][3][4][5] [7][8][][][]
+ 
+
+count = 0
+n = 3
  */
 #include <iostream>
 
@@ -14,9 +21,10 @@ class Fila
 {
 private:
     // Atributos //
-    int p, u, n, count;
+    int p, p2, u, n, count;
     Tipo_Var *estrutura1;
     Tipo_Var *estrutura2;
+    Tipo_Var *estrutura3;
 
 public:
     // Declaração dos Métodos //
@@ -27,14 +35,17 @@ public:
     bool cheio();
     bool vazio();
     void imprimir();
+    int getU();
+    int getP();
 };
 
 // Implementtação dos Métodos //
 Fila::Fila()
 {
-    p = 0, u = 0, n = 0, count = 0;
+    p = 0, p2 = 0, u = 0, n = 0, count = 0;
     estrutura1 = new Tipo_Var[Max_Itens / 2];
     estrutura2 = new Tipo_Var[Max_Itens / 2];
+    estrutura3 = new Tipo_Var[Max_Itens];
 }
 
 Fila::~Fila()
@@ -59,15 +70,17 @@ void Fila::inserir(Tipo_Var item)
     }
     else
     {
-        if (n < Max_Itens / 2)
+        if (count < Max_Itens / 2) ///
         {
             estrutura1[u] = item;
             u = (u + 1) % (Max_Itens / 2);
+            count++; ////
         }
         else
         {
             estrutura2[u] = item;
             u = (u + 1) % (Max_Itens / 2);
+            count = (count + 1) % Max_Itens;
         }
         n++;
         cout << "Item adicionado: " << item << endl;
@@ -83,6 +96,7 @@ void Fila::desenfilar()
     else
     {
         p = (p + 1) % (Max_Itens / 2); // Atualiza o marcador para o próximo elemento
+        p2 = (p2 + 1) % Max_Itens;
         n--;
     }
 }
@@ -94,23 +108,36 @@ void Fila::imprimir()
     }
     else
     {
-        cout << "Fila: [";
-
-        // Imprime os elementos da estrutura1
-        for (int i = p; i < p + n && i < Max_Itens / 2; i++)
-        {
-            cout << estrutura1[i % (Max_Itens / 2)] << " ";
+        int count = 0;
+        
+        for(int i = 0; i < (Max_Itens / 2); i++){
+        estrutura3[i] = estrutura1[i];
+        count++;
+    } 
+    if(count >= Max_Itens / 2){
+        for(int i = 0; i < (Max_Itens / 2); i++){
+            estrutura3[i + (Max_Itens / 2)] = estrutura2[i];
         }
+    }
 
-        // Imprime os elementos da estrutura2
-        for (int i = 0; i < n - (Max_Itens / 2) && i < Max_Itens / 2; i++)
+        cout << "[ ";
+        for (int i = 0; i < n; i++)
         {
-            cout << estrutura2[i] << " ";
+            int posicao = (p2 + i) % Max_Itens; // Calcula a posição correta para imprimir
+            cout << estrutura3[posicao] << " ";
+            
         }
-
         cout << "]" << endl;
     }
+
 }
+    int Fila::getU(){
+        return u;
+    }
+    int Fila::getP(){
+        return p;
+    }
+    
 
 
 int main()
@@ -122,7 +149,7 @@ int main()
  
     do
     {
-        cout << "Digite: \n1 para Adicionar um item\n2 para desenfilar um item\n3 para Sair " << endl;
+        cout << "Digite: \n1 para Adicionar um item\n2 para desenfilar um item\n3 para imprimir\n4 para sair " << endl;
         cin >> opcao;
 
         if (opcao == 1)
@@ -131,16 +158,27 @@ int main()
             cin >> item;
             fila1.inserir(item);
             fila1.imprimir();
+            
+             
         }
         else if (opcao == 2)
         {
             fila1.desenfilar();
             fila1.imprimir();
+            
+            
+            
         }
-        else if (opcao == 3)
+        else if(opcao == 3){
+            fila1.imprimir();
+        }
+        else if (opcao == 4)
         {
             break;
         }
     } while (opcao != 0);
     return 0;
 }
+
+
+
