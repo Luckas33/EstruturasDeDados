@@ -80,7 +80,7 @@ int main()
 
     do
     {
-        cout << "Digite 1 para inseirir" << endl;
+        cout << "Digite 1 para inserir" << endl;
         cout << "Digite 2 para remover" << endl;
         cout << "Digite 3 para cconsultar um valor" << endl;
         cin >> opcao;
