@@ -1,71 +1,81 @@
-/**
- * @author Lucas
- * @brief pilha aritmetica, pega os valores de um vetor e calcula em uma variavel
- * 
-*/
-#include <string.h>
 #include <iostream>
-#include <cctype>
+#include <string>
+#include <sstream>
 using namespace std;
+
 const int MaxItem = 10;
 
-
-struct Pilha{
-    string estrutura[MaxItem]; //estrutura[(1+2)-(4+7)]
+struct Pilha {
+    string estrutura[MaxItem];
     int n = 0;
 };
 
-bool vazia(Pilha &P){
-    cout << "Fila vazia" << endl;
-    return(P.n == 0);
+void inserir(Pilha &P, string item) {
+    P.estrutura[P.n] = item;
+    P.n++;
 }
 
-bool cheia(Pilha &P){
-    cout << "Fila cheia" << endl;
-    return(P.n == MaxItem);
+string remover(Pilha &P) {
+    string res = P.estrutura[P.n - 1];
+    P.n--;
+    return res;
 }
 
-void inserir(Pilha &P,string item){
-    if(cheia(P)){
-    }
-    else{
-        P.estrutura[P.n] = item;
-        P.n++;
-    }
-}
-
-string remover(Pilha &P){
-    if(vazia(P)){
-    }else{
-        cout << "Item removido: " << P.estrutura[P.n - 1];
-        return P.estrutura[P.n - 1];
-        P.n--;
-    }
-}
-
-int calcular(Pilha &P){
-
-    int num1,num2, total;
-
-    if(vazia(P)){
-    }else{
-        for(int i;i < P.n;i++){
-            string digito = P.estrutura[i];
-            if(isdigit(digito[0])){
-                
+bool calcular(Pilha &P) {
+    try {
+        double y = std::stod(remover(P));
+        string op = remover(P);
+        double x = std::stod(remover(P));
+        double result;
+        if (op == "+") {
+            result = x + y;
+        } else if (op == "-") {
+            result = x - y;
+        } else if (op == "*") {
+            result = x * y;
+        } else if (op == "/") {
+            if (y == 0) {
+                throw invalid_argument("Divisao por zero");
             }
+            result = x / y;
         }
+        inserir(P, to_string(result));
+        return true;
+    } catch (const invalid_argument &e) {
+        cerr << "Erro: " << e.what() << endl;
+        return false; // Indica que houve um erro ao calcular
     }
-    return 0;
 }
 
+void ler(Pilha &P, string expressao) {
+    stringstream ss(expressao);
+    std::string token;
 
+    while(ss >> token){
+    stringstream tokenStream(token);
 
+    if(token != "("){
 
+        if(token == ")"){
+            calcular(P);
+        }
+        else{
+        inserir(P, token);
+        }
+    
 
-int main(){
+    }
+    
+}
+    cout << P.estrutura[0] << endl;
+}
+
+int main() {
     Pilha P;
-
-
+    string expressao;
+    cout << "Digite a expressao aritmetica: ";
+    getline(cin, expressao); // Usar getline para permitir espaços na expressão
+    ler(P, expressao);
     return 0;
 }
+
