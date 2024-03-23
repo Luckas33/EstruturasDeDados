@@ -34,7 +34,7 @@ public:
     int getP();
 };
 
-// Implementtação dos Métodos //
+// Implementação dos Métodos //
 Fila::Fila()
 {
     p = 0, p2 = 0, u = 0, n = 0, count = 0;
