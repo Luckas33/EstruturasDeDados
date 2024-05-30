@@ -33,7 +33,7 @@ public:
     {
         if (cheia())
         {
-            redimencionar();
+            redimencionarAumentar();
         }
         estrutura[ultimo] = item;
         ultimo++;
@@ -50,13 +50,26 @@ public:
         {
             cout << "Item " << estrutura[primeiro] << " removido com sucesso" << endl;
             primeiro++;
+            //if(ultimo == limiteAtual / 2){}
             imprimir();
         }
     }
 
-    void redimencionar()
+    void redimencionarAumentar()
     {
         int limiteNovo = limiteAtual * 2;
+        tipoItem *estruturaNova = new tipoItem[limiteNovo];
+
+        for (int i = 0; i < limiteAtual; i++)
+        {
+            estruturaNova[i] = estrutura[i + primeiro];
+        }
+        delete[] estrutura;
+        estrutura = estruturaNova;
+    }
+
+    void redimencionarDiminuir(){
+        int limiteNovo = limiteAtual / 2;
         tipoItem *estruturaNova = new tipoItem[limiteNovo];
 
         for (int i = 0; i < limiteAtual; i++)
@@ -82,13 +95,13 @@ public:
         cout << "Fila: [ ";
         for (int i = primeiro; i < ultimo; i++)
         {
-            if (primeiro != ultimo)
+            if (i == ultimo - 1)
             {
-                cout << estrutura[i] << ", ";
+                cout << estrutura[i];
             }
             else
             {
-                cout << estrutura[primeiro];
+                cout << estrutura[i] << ", ";
             }
         }
         cout << "]" << endl;
@@ -129,7 +142,7 @@ int main()
         }
         else
         {
-            cout << "resposta inválida";
+            cout << "resposta invalida";
         }
 
     } while (1);
