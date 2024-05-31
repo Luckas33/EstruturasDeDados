@@ -13,7 +13,7 @@ int limiteAtual = 1; // começar com 1 ou 2
 class FilaIlimitada
 {
 private:
-    int primeiro, ultimo;
+    int primeiro, ultimo, totalItems;
     tipoItem *estrutura;
 
 public:
@@ -21,6 +21,7 @@ public:
     {
         primeiro = 0;
         ultimo = 0;
+        totalItems = 0;
         estrutura = new tipoItem[limiteAtual];
     }
 
@@ -37,6 +38,7 @@ public:
         }
         estrutura[ultimo] = item;
         ultimo++;
+        totalItems++;
         imprimir();
     }
 
@@ -50,7 +52,10 @@ public:
         {
             cout << "Item " << estrutura[primeiro] << " removido com sucesso" << endl;
             primeiro++;
-            //if(ultimo == limiteAtual / 2){}
+            totalItems--;
+            if(totalItems == limiteAtual * 0.25){
+                redimencionarDiminuir();
+            }
             imprimir();
         }
     }
@@ -65,6 +70,7 @@ public:
             estruturaNova[i] = estrutura[i + primeiro];
         }
         delete[] estrutura;
+        limiteAtual = limiteNovo;
         estrutura = estruturaNova;
     }
 
@@ -77,6 +83,7 @@ public:
             estruturaNova[i] = estrutura[i + primeiro];
         }
         delete[] estrutura;
+        limiteAtual = limiteNovo;
         estrutura = estruturaNova;
     }
 
@@ -106,6 +113,17 @@ public:
         }
         cout << "]" << endl;
     }
+
+    void imprimirTudo(){
+        cout << "Vetor completo: [";
+
+        for (int i = 0; i < limiteAtual; i++)
+        {
+            cout << estrutura[i] << ",";
+            cout << i;
+        }
+        cout << "]" << endl;        
+    }
 };
 
 int main()
@@ -133,7 +151,7 @@ int main()
         }
         else if (escolha == 3)
         {
-            fila.imprimir();
+            fila.imprimirTudo();
         }
         else if (escolha == 0)
         {
