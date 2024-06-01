@@ -1,28 +1,118 @@
-/*
-Usando a sua implementação de pilha ilimitada dos exercícios da aula 07, implemente um programa para avaliar expressões aritméticas nos moldes do final da aula 05. A expressão digitada pode ser arbitrariamente grande, a critério do(a) usuário(a) (daí o uso da pilha ilimitada), mas sempre possuirá exatamente um par de parênteses para cada operador nela presente, como em "((0 - 40) * (1 / 100))" (lembrando que as aspas não fazem parte da entrada). 
-
-Dicas: (a) numa primeira implementação, você pode supor que os elementos presentes na expressão (parênteses, números e operadores) estarão todos separados por pelo menos um espaço em branco, como em "( ( 0 - 40 ) * ( 1 / 100 ) )";
-
-assim sendo, cada comando "cin >> s", sendo "s" uma string, lerá apenas um elemento (parêntese, número ou operador); (b) as funções stod e to_string convertem facilmente entre double e string, de forma que você pode implementar e usar uma pilha de strings e converter os seus elementos de e para "double" sempre que necessário.
-
-Escreva um programa que avalie expressões aritméticas digitadas usando operadores pré-fixos, ou seja, que aparecem antes dos seus operandos, como em "/ 6000 * 5 / 1410 94", que na notação infixa seria escrita como "6000 / (5 * (1410/94))". Observe que, nessa notação polonesa, os parênteses são dispensáveis, pois nunca há ambiguidade, desde que o número de operandos de cada operador seja respeitado. Outro exemplo de entrada possível: "/ * + 3 5 7 - 20 6", que na notação infixa é "((3 + 5) * 7) / (20 - 6)".
-*/
-#include <iostream>;
+#include <iostream>
+#include <string>
+#include <sstream>
 using namespace std;
 
-class Pilhuda
-{
+typedef string tipoItem;
+
+class Pilha {
 private:
-    /* data */
+    int tamanho, limiteAtual;
+    tipoItem *estrutura;
+
 public:
-    Pilhuda(/* args */);
-    ~Pilhuda();
+    Pilha() {
+        limiteAtual = 10;
+        tamanho = 0;
+        estrutura = new tipoItem[limiteAtual];
+    }
+
+    ~Pilha() {
+        delete[] estrutura;
+    }
+
+    void adicionar(tipoItem item) {
+        if (cheia()) {
+            redimensionar();
+        }
+        estrutura[tamanho] = item;
+        tamanho++;
+    }
+
+    tipoItem remover() {
+        if (isvazio()) {
+            cout << "Pilha vazia" << endl;
+            return "";
+        } else {
+            tamanho--;
+            return estrutura[tamanho];
+        }
+    }
+
+    tipoItem topo() {
+        if (isvazio()) {
+            cout << "Pilha vazia" << endl;
+            return "";
+        } else {
+            return estrutura[tamanho - 1];
+        }
+    }
+
+    bool calcular() {
+        double y = stod(remover());
+        string op = remover();
+        double x = stod(remover());
+        double result;
+        if (op == "+") {
+            result = x + y;
+        } else if (op == "-") {
+            result = x - y;
+        } else if (op == "*") {
+            result = x * y;
+        } else if (op == "/") {
+            if (y == 0) {
+                return false;
+            }
+            result = x / y;
+        }
+        adicionar(to_string(result));
+        return true;
+    }
+
+    void redimensionar() {
+        int limiteNovo = limiteAtual * 2;
+        tipoItem *estrutura_nova = new tipoItem[limiteNovo];
+
+        for (int i = 0; i < limiteAtual; i++) {
+            estrutura_nova[i] = estrutura[i];
+        }
+        delete[] estrutura;
+        limiteAtual = limiteNovo;
+        estrutura = estrutura_nova;
+    }
+
+    bool cheia() {
+        return tamanho == limiteAtual;
+    }
+
+    bool isvazio() {
+        return tamanho == 0;
+    }
 };
 
+void ler(Pilha &P, string expressao) {
+    stringstream ss(expressao);
+    string token;
 
-int main(){
+    while (ss >> token) {
+        if (token == ")") {
+            if (!P.calcular()) {
+                cout << "Erro na divisão por zero." << endl;
+                return;
+            }
+        } else if (token != "(") {
+            P.adicionar(token);
+        }
+    }
 
+    cout << "Resultado: " << P.topo() << endl;
+}
 
-
+int main() {
+    Pilha P;
+    string expressao;
+    cout << "Digite a expressao aritmetica: ";
+    getline(cin, expressao); // Usar getline para permitir espaços na expressão
+    ler(P, expressao);
     return 0;
 }
