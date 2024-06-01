@@ -53,7 +53,8 @@ public:
             cout << "Item " << estrutura[primeiro] << " removido com sucesso" << endl;
             primeiro++;
             totalItems--;
-            if(totalItems == limiteAtual * 0.25){
+            if (totalItems == limiteAtual * 0.25)
+            {
                 redimencionarDiminuir();
             }
             imprimir();
@@ -74,7 +75,8 @@ public:
         estrutura = estruturaNova;
     }
 
-    void redimencionarDiminuir(){
+    void redimencionarDiminuir()
+    {
         int limiteNovo = limiteAtual / 2;
         tipoItem *estruturaNova = new tipoItem[limiteNovo];
 
@@ -83,6 +85,8 @@ public:
             estruturaNova[i] = estrutura[i + primeiro];
         }
         delete[] estrutura;
+        primeiro = 0;
+        ultimo = totalItems - 1;
         limiteAtual = limiteNovo;
         estrutura = estruturaNova;
     }
@@ -100,9 +104,26 @@ public:
     void imprimir()
     {
         cout << "Fila: [ ";
-        for (int i = primeiro; i < ultimo; i++)
+        for (int i = primeiro; i <= ultimo; i++)
         {
-            if (i == ultimo - 1)
+            if (i == ultimo)
+            {
+                cout << estrutura[i];
+            }
+            else
+            {
+                cout << estrutura[i] << ",";
+            }
+        }
+        cout << "]" << endl;
+    }
+
+    void imprimirTudo()
+    {
+        cout << "Vetor completo: [ ";
+        for (int i = 0; i < limiteAtual; i++)
+        {
+            if (i == limiteAtual - 1)
             {
                 cout << estrutura[i];
             }
@@ -111,18 +132,7 @@ public:
                 cout << estrutura[i] << ", ";
             }
         }
-        cout << "]" << endl;
-    }
-
-    void imprimirTudo(){
-        cout << "Vetor completo: [";
-
-        for (int i = 0; i < limiteAtual; i++)
-        {
-            cout << estrutura[i] << ",";
-            cout << i;
-        }
-        cout << "]" << endl;        
+        cout << " ]" << endl;
     }
 };
 
