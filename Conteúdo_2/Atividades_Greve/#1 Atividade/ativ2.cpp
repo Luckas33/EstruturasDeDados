@@ -17,3 +17,15 @@ Observe que, além das funções "inicio" e "fim", que recebem um conjunto e ret
 Escreva então uma implementação de conjunto que permita um percurso como no código acima. A grande questão aqui é: como você vai definir o struct/class "Iterador", de forma a conseguir viabilizar o percurso pelos elementos do conjunto?
 
 */
+#include <iostream>
+using namespace std;
+
+
+
+
+
+int main(){
+
+
+  return 0;
+}

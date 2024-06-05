@@ -52,7 +52,7 @@ void Matriz::ler()
     for (int j = 0; j < n; j++)
     {
       double item;
-      cout << "Escreva o item na posição: [" << m << "," << n << "]\n";
+      cout << "Escreva o item na posicao: [" << i << "," << j << "]\n";
       cin >> item;
       Matriz::escrever(item, i, j);
     }
@@ -93,18 +93,19 @@ int main()
 {
   int m,n;
   cout << "Bem-vindo" << endl;
-  cout << "Digite o numero de linhas e colunas m x n";
+  cout << "Digite o numero de linhas e colunas m x n" << endl;
   cin >> m;
   cin >> n;
   Matriz m1(m,n);
   Matriz m2(m,n);
-  cout << "Agora vamos preencha duas matrizes";
+
+  cout << "Agora vamos preencha a matriz 1" << endl;
   m1.ler();
+  cout << "Agora vamos preencha a matriz 2" << endl;
   m2.ler();
 
   Matriz soma = m1.somar(m2);
   soma.imprimir();
 
-  system("pause");
   return 0;
 }
