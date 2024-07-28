@@ -18,12 +18,12 @@ public:
     {
         topo = nullptr;
     }
-    ~Pilha(){
+    ~Pilha()
+    {
         while (topo != nullptr)
         {
             desempilhar();
         }
-        
     }
     void empilhar(item valor)
     {
@@ -37,6 +37,7 @@ public:
             Noh *aux = topo;
             topo = topo->proximo;
             delete aux;
+            imprimir();
             return;
         }
         cout << "Pilha vazia" << endl;
@@ -47,15 +48,26 @@ public:
     }
     void imprimir()
     {
+        int count = 0;
         if (!vazia())
         {
             Noh *aux = topo;
+            cout << "[";
             while (aux != nullptr)
             {
                 cout << " " << aux->valor;
                 aux = aux->proximo;
+                count++;
             }
+            cout << "]" << endl;
+            if (count == 0)
+            {
+                cout << "Pilha ficou vazia" << endl;
+            }
+
+            cout << "Elementos na Pilha: " << count << endl;
         }
+        
     }
 };
 
@@ -64,28 +76,29 @@ int main()
     int escolha;
     item valor;
     Pilha pilha;
-    do
+    try
     {
-        cout << "Digite 1 para inserir" << endl;
-        cout << "Digite 2 para desempilhar" << endl;
-        cout << "Digite 3 para sair" << endl;
-        cin >> escolha;
-        if (escolha == 1)
+        do
         {
-            cin >> valor;
-            pilha.empilhar(valor);
-            //pilha.imprimir();
-        }
-        if (escolha == 2)
-        {
-            pilha.desempilhar();
-            pilha.imprimir();
-        }
-        else
-        {
-            break;
-        }
+            cout << "Digite 1 para inserir" << endl;
+            cout << "Digite 2 para desempilhar" << endl;
+            cout << "Digite 3 para sair" << endl;
+            cin >> escolha;
+            if (escolha == 1)
+            {
+                cin >> valor;
+                pilha.empilhar(valor);
+            }
+            if (escolha == 2)
+            {
+                pilha.desempilhar();
+            }
 
-    } while (escolha != 3);
+        } while (escolha != 3);
+    }
+    catch (bad_alloc)
+    {
+        cout << "Não foi possível alocar memória" << endl;
+    }
     return 2;
 }
