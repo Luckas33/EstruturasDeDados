@@ -1,6 +1,7 @@
 /*
 Escreva uma implementação de fila ilimitada utilizando vetor (alocado dinamicamente). O vetor inicial deve ter tamanho 1 ou 2. Sempre que o vetor estiver cheio, utilize a estratégia de redimensionamento eficiente estudada na aula: substituí-lo por outro com o dobro do tamanho.
 Escreva uma variação da implementação da questão anterior que, além de expandir o vetor quando ele estiver cheio, também "contraia" o vetor (isto é, substitua-o por outro menor) quando ele estiver significativamente vazio.
+
 Atenção: pense numa estratégia eficiente de contração, que faça com que o número de cópias ao longo das operações da fila (tanto inserções quanto remoções) seja proporcional ao número de operações realizadas. A grande questão é: você irá contrair o vetor quando ele estiver quantos % vazio? E o vetor menor terá que tamanho em relação ao original? Ao responder estas perguntas, use o argumento das moedas para se convencer de que as suas escolhas são eficientes: de quantas moedas você vai precisar a cada inserção e a cada remoção?
 */
 
@@ -103,36 +104,42 @@ public:
 
     void imprimir()
     {
-        cout << "Fila: [ ";
-        for (int i = primeiro; i <= ultimo; i++)
+        if (!vazio())
         {
-            if (i == ultimo)
+            //redimencionar();
+            cout << "[";
+            for (int i = primeiro; i < totalItems; i++)
             {
-                cout << estrutura[i];
+                if (i == 0)
+                {
+                    cout << estrutura[i];
+                }
+                else
+                {
+                    cout << "," << estrutura[i];
+                }
             }
-            else
-            {
-                cout << estrutura[i] << ",";
-            }
+            cout << "]" << endl;
+            cout << "total de itens: " << totalItems << endl;
         }
-        cout << "]" << endl;
+        else
+        {
+            cout << "Fila vazia" << endl;
+        }
     }
 
-    void imprimirTudo()
+    void redimencionar()
     {
-        cout << "Vetor completo: [ ";
+        tipoItem *estruturaNova = new tipoItem[limiteAtual];
+
         for (int i = 0; i < limiteAtual; i++)
         {
-            if (i == limiteAtual - 1)
-            {
-                cout << estrutura[i];
-            }
-            else
-            {
-                cout << estrutura[i] << ", ";
-            }
+            estruturaNova[i] = estrutura[i];
         }
-        cout << " ]" << endl;
+        delete[] estrutura;
+        estrutura = estruturaNova;
+        primeiro = 0;
+        ultimo = totalItems;
     }
 };
 
@@ -161,7 +168,7 @@ int main()
         }
         else if (escolha == 3)
         {
-            fila.imprimirTudo();
+            fila.imprimir();
         }
         else if (escolha == 0)
         {
