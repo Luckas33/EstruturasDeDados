@@ -9,8 +9,6 @@ using namespace std;
 
 typedef int tipoItem;
 
-///////////////////////////////////////
-
 class PilhaInfinita
 {
 private:
@@ -20,7 +18,7 @@ private:
 public:
     PilhaInfinita()
     {
-        limiteAtual = 5;
+        limiteAtual = 2; // Quando se tem o redimencionar para baixo o limite inicial deverá ser sempre 1 ou 2
         tamanho = 0;
         estrutura = new tipoItem[limiteAtual];
     }
@@ -54,10 +52,12 @@ public:
         limiteAtual = limiteNovo;
         estrutura = estrutura_nova;
     }
-    void redimencionarAbaixo(){ //Opcional
+    void redimencionarAbaixo() // Opcional
+    {
         int limiteNovo = limiteAtual / 2;
         tipoItem *estrutura_nova = new tipoItem[limiteNovo];
-        for(int i = 0;i < limiteNovo;i++){
+        for (int i = 0; i < limiteNovo; i++)
+        {
             estrutura_nova[i] = estrutura[i];
         }
         delete[] estrutura;
@@ -65,7 +65,7 @@ public:
         limiteAtual = limiteNovo;
     }
 
-    void removerRedimencionado() //Opcional
+    void removerRedimencionado() // Opcional
     {
         if (isvazio())
         {
@@ -73,7 +73,8 @@ public:
         }
         else
         {
-            if(tamanho == limiteAtual*0.25){
+            if (tamanho == limiteAtual * 0.25)
+            {
                 redimencionarAbaixo();
             }
             cout << "item" << estrutura[tamanho] << " removida com sucesso" << endl;
@@ -82,7 +83,7 @@ public:
         }
     }
 
-    void remover() 
+    void remover()
     {
         if (isvazio())
         {
@@ -114,9 +115,9 @@ public:
             cout << estrutura[i] << ", ";
         }
         cout << "]" << endl;
+        cout << "Tamnho atual da pilha: " << limiteAtual << endl;
     }
 };
-///////////////////////////////////////////
 
 int main()
 {
@@ -126,27 +127,32 @@ int main()
     tipoItem item;
     do
     {
-        cout << "Digite 1 para adicionar" << endl;     
-        cout << "Digite 2 para remover" << endl;     
+        cout << "Digite 1 para adicionar" << endl;
+        cout << "Digite 2 para remover" << endl;
         cout << "Digite 3 para imprimir" << endl;
         cin >> escolha;
 
-        if(escolha == 1){
-            cout << "Digite um item para inserir" << endl;   
-            cin >> item;  
-            pilha.adicionar(item);
-        }else if (escolha == 2)
+        if (escolha == 1)
         {
-            pilha.remover(); 
-        }else if (escolha == 3)
+            cout << "Digite um item para inserir" << endl;
+            cin >> item;
+            pilha.adicionar(item);
+        }
+        else if (escolha == 2)
+        {
+            // pilha.remover();
+            pilha.removerRedimencionado();
+        }
+        else if (escolha == 3)
         {
             pilha.imprimir();
-        }else{
+        }
+        else
+        {
             break;
         }
-        
+
     } while (1);
-    
 
     return 0;
 }
