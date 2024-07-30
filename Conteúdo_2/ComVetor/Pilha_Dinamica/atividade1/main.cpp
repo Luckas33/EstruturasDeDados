@@ -54,6 +54,33 @@ public:
         limiteAtual = limiteNovo;
         estrutura = estrutura_nova;
     }
+    void redimencionarAbaixo(){ //Opcional
+        int limiteNovo = limiteAtual / 2;
+        tipoItem *estrutura_nova = new tipoItem[limiteNovo];
+        for(int i = 0;i < limiteNovo;i++){
+            estrutura_nova[i] = estrutura[i];
+        }
+        delete[] estrutura;
+        estrutura = estrutura_nova;
+        limiteAtual = limiteNovo;
+    }
+
+    void removerRedimencionado() //Opcional
+    {
+        if (isvazio())
+        {
+            cout << "pilha vazia" << endl;
+        }
+        else
+        {
+            if(tamanho == limiteAtual*0.25){
+                redimencionarAbaixo();
+            }
+            cout << "item" << estrutura[tamanho] << " removida com sucesso" << endl;
+            tamanho--;
+            imprimir();
+        }
+    }
 
     void remover() 
     {
