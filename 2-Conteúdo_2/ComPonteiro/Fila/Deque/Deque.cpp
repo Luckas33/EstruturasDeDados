@@ -9,9 +9,9 @@ class Deque
 private:
     struct Noh
     {
-        Noh *prox;
-        TipoItem valor;
         Noh *ante;
+        TipoItem valor;
+        Noh *prox;
     };
 
     Noh *esquerda;
@@ -123,7 +123,7 @@ public:
             cout << "[";
             while (aux != nullptr)
             {
-                if (tamanho != 0)
+                if (tamanho == 0)
                 {
                     cout << aux->valor;
                 }else{
