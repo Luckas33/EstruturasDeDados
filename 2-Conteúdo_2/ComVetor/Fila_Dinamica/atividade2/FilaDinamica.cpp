@@ -110,13 +110,14 @@ public:
             cout << "[";
             for (int i = primeiro; i < totalItems; i++)
             {
+                int posicao = (primeiro + i) % limiteAtual;
                 if (i == 0)
                 {
-                    cout << estrutura[i];
+                    cout << estrutura[posicao];
                 }
                 else
                 {
-                    cout << "," << estrutura[i];
+                    cout << "," << estrutura[posicao];
                 }
             }
             cout << "]" << endl;
@@ -126,20 +127,6 @@ public:
         {
             cout << "Fila vazia" << endl;
         }
-    }
-
-    void redimencionar()
-    {
-        tipoItem *estruturaNova = new tipoItem[limiteAtual];
-
-        for (int i = 0; i < limiteAtual; i++)
-        {
-            estruturaNova[i] = estrutura[i];
-        }
-        delete[] estrutura;
-        estrutura = estruturaNova;
-        primeiro = 0;
-        ultimo = totalItems;
     }
 };
 

@@ -13,7 +13,6 @@ class Dicionario
         Noh *prox;
     };
 
-public:
     struct ResConsulta
     {
         bool achou;
@@ -38,6 +37,7 @@ public:
         return ret;
     }
 
+public:
     Noh *inicio;
 
     Dicionario()
@@ -145,6 +145,7 @@ int main()
             }
             if (escolha == 3)
             {
+                /*
                 cout << "Digite a chave para saber o seu valor" << endl;
                 cin >> chave;
                 Dicionario::ResConsulta resultado = dic.consultar(chave);
@@ -156,6 +157,7 @@ int main()
                 {
                     cout << "Chave não encontrada" << endl;
                 }
+                */
             }
         } while (escolha != 4);
     }

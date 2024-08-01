@@ -27,7 +27,7 @@ public:
         delete[] estrutura;
     }
 
-    void adicionar(tipoItem item)
+    void empilhar(tipoItem item)
     {
         if (cheia())
         {
@@ -37,6 +37,38 @@ public:
         tamanho++;
         cout << "Item " << item << " adicionado com sucesso" << endl;
         imprimir();
+    }
+
+    void desempilharRedimencionado() // Opcional
+    {
+        if (isvazio())
+        {
+            cout << "pilha vazia" << endl;
+        }
+        else
+        {
+            if (tamanho == limiteAtual * 0.25)
+            {
+                redimencionarAbaixo();
+            }
+            cout << "item" << estrutura[tamanho] << " removida com sucesso" << endl;
+            tamanho--;
+            imprimir();
+        }
+    }
+
+    void desempilhar()
+    {
+        if (isvazio())
+        {
+            cout << "pilha vazia" << endl;
+        }
+        else
+        {
+            cout << "item" << estrutura[tamanho] << " removida com sucesso" << endl;
+            tamanho--;
+            imprimir();
+        }
     }
 
     void redimencionar()
@@ -63,38 +95,6 @@ public:
         delete[] estrutura;
         estrutura = estrutura_nova;
         limiteAtual = limiteNovo;
-    }
-
-    void removerRedimencionado() // Opcional
-    {
-        if (isvazio())
-        {
-            cout << "pilha vazia" << endl;
-        }
-        else
-        {
-            if (tamanho == limiteAtual * 0.25)
-            {
-                redimencionarAbaixo();
-            }
-            cout << "item" << estrutura[tamanho] << " removida com sucesso" << endl;
-            tamanho--;
-            imprimir();
-        }
-    }
-
-    void remover()
-    {
-        if (isvazio())
-        {
-            cout << "pilha vazia" << endl;
-        }
-        else
-        {
-            cout << "item" << estrutura[tamanho] << " removida com sucesso" << endl;
-            tamanho--;
-            imprimir();
-        }
     }
 
     bool cheia()
@@ -127,8 +127,8 @@ int main()
     tipoItem item;
     do
     {
-        cout << "Digite 1 para adicionar" << endl;
-        cout << "Digite 2 para remover" << endl;
+        cout << "Digite 1 para empilhar" << endl;
+        cout << "Digite 2 para desempilhar" << endl;
         cout << "Digite 3 para imprimir" << endl;
         cin >> escolha;
 
@@ -136,12 +136,12 @@ int main()
         {
             cout << "Digite um item para inserir" << endl;
             cin >> item;
-            pilha.adicionar(item);
+            pilha.empilhar(item);
         }
         else if (escolha == 2)
         {
-            // pilha.remover();
-            pilha.removerRedimencionado();
+            // pilha.desempilhar();
+            pilha.desempilharRedimencionado();
         }
         else if (escolha == 3)
         {

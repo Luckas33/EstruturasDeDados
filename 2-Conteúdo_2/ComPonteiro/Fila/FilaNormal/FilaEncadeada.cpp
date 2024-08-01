@@ -52,8 +52,7 @@ public:
         }
         else
         {
-            Noh *aux;
-            aux = inicio;
+            Noh *aux = inicio;
             inicio = inicio->prox;
             delete aux;
             imprimir();
