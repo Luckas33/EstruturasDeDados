@@ -21,7 +21,7 @@ private:
 
     Noh **Tabela;
     int tamanhoAtual, totalItens;
-    
+
 public:
     TabelaHash(){
         tamanhoAtual = 1;
@@ -29,13 +29,40 @@ public:
         Tabela = new Noh*[tamanhoAtual];
     }
     ~TabelaHash();
-    void inserir(int chave, tipoItem);
-    void remover(int chave, tipoItem);
-    void FuncaoHash(int chave, tipoItem);
-    void redimencionarDobrar();
-    void redimencionarDividir();
-    bool vazio();
-    bool cheio();
+    void inserir(int chave, tipoItem item);
+    void remover(int chave, tipoItem item);
+    void FuncaoHash(int chave, tipoItem item){
+        Tabela[chave&tamanhoAtual];
+        
+    }
+    void redimencionarDobrar(){
+        int tamanhoNovo = tamanhoAtual * 2;
+        Noh **TabelaNova = new Noh*[tamanhoNovo];
+        for (int i = 0; i < tamanhoAtual; i++)
+        {
+            TabelaNova[i] = Tabela[i];
+        }
+        tamanhoAtual = tamanhoNovo;
+        delete[] Tabela;
+        Tabela = TabelaNova;
+    }
+    void redimencionarDividir(){
+        int tamanhoNovo = tamanhoAtual / 2;
+        Noh **tabelaNova = new Noh*[tamanhoNovo];
+        for (int i = 0; i < tamanhoAtual; i++)
+        {
+            tabelaNova[i] = Tabela[i];
+        }
+        tamanhoAtual = tamanhoNovo;
+        delete[] Tabela;
+        Tabela = tabelaNova;
+    }
+    bool vazio(){
+        return totalItens == 0;
+    }
+    bool cheio(){
+        return totalItens == tamanhoAtual;
+    }
 };
 
 
