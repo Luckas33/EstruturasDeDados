@@ -4,7 +4,8 @@
 
 // Uma ideia natural para tratar colisões consiste em armazenar as chaves sinônimas em listas encadeadas. Há duas alternativas. As listas podem se encontrar no exterior da tabela ou compartilhar o mesmo espaço da tabela.
 
-//Neste código utilizarei o encadeamento exterior
+// Neste código utilizarei o encadeamento exterior
+//Agradecimentos ao bom jardim
 
 #include <iostream>
 using namespace std;
@@ -15,77 +16,183 @@ class TabelaHash
 private:
     struct Noh
     {
-        Noh *prox;
+        int chave;
         tipoItem item;
+        Noh *prox;
     };
 
+    Noh sentinela;
     Noh **Tabela;
     int tamanhoAtual, totalItens;
 
+    struct ResConsulta
+    {
+        bool achou;
+        string valor;
+    };
+    ResConsulta consultar(int chave)
+    {
+        ResConsulta res;
+        int i = FuncaoHash(chave);
+
+        Noh *n = Tabela[i];
+        while (n != &sentinela)
+        {
+            if (n->chave == chave)
+            {
+                res.achou = true;
+                res.valor = n->item;
+                return res;
+            }
+            n = n->prox;
+        }
+
+        res.achou = false;
+        return res;
+    }
+
 public:
-    TabelaHash(){
+    TabelaHash()
+    {
         tamanhoAtual = 1;
         totalItens = 0;
-        Tabela = new Noh*[tamanhoAtual];
+        Tabela = new Noh *[tamanhoAtual];
+        Tabela[0] = &sentinela;
     }
     ~TabelaHash();
-    void inserir(int chave, tipoItem item);
-    void remover(int chave, tipoItem item);
-    void FuncaoHash(int chave, tipoItem item){
-        Tabela[chave&tamanhoAtual];
-        
-    }
-    void redimencionarDobrar(){
-        int tamanhoNovo = tamanhoAtual * 2;
-        Noh **TabelaNova = new Noh*[tamanhoNovo];
-        for (int i = 0; i < tamanhoAtual; i++)
+    void inserir(int chave, tipoItem item)
+    {
+        ResConsulta consulta = consultar(chave);
+        if (consulta.achou == true)
         {
-            TabelaNova[i] = Tabela[i];
+            return;
         }
+        
+        int i;
+        if (cheio())
+        {
+            redimencionarTamanho(tamanhoAtual * 2);
+        }
+        i = FuncaoHash(chave);
+        Tabela[i] = new Noh{chave, item, Tabela[i]};
+        totalItens++;
+    }
+    int FuncaoHash(int chave)
+    {
+        return (chave % tamanhoAtual);
+    }
+    void remover(int chave, tipoItem item)
+    {
+        ResConsulta consulta = consultar(chave);
+        if (consulta.achou == false)
+        {
+            return;
+        }
+        
+        if (vazio())
+        {
+            cout << "Tabela vazia" << endl;
+            return;
+        }
+        int i = FuncaoHash(chave);
+        Noh *aux1 = Tabela[i];
+        // Caso for o primeiro
+        if (aux1->chave == chave)
+        {
+            Tabela[i] = aux1->prox;
+            delete aux1;
+            return;
+        }
+        // Caso não for o primeiro
+        Noh *buscador;
+        while (aux1 != &sentinela)
+        {
+            if (aux1->prox->item == item)
+            {
+                buscador = aux1->prox;
+                aux1->prox = aux1->prox->prox;
+            }
+            aux1 = aux1->prox;
+            delete buscador;
+        }
+        totalItens--;
+        if (totalItens = tamanhoAtual * 0.25)
+        {
+            redimencionarTamanho(tamanhoAtual / 2);
+        }
+    }
+    void redimencionarTamanho(int tamanhoNovo)
+    {
+        Noh **TabelaNova = new Noh *[tamanhoNovo];
+        int m = tamanhoAtual;
         tamanhoAtual = tamanhoNovo;
+
+        for (int i = 0; i < m; i++) // nova tabela recebe sentinela todos os índices
+        {
+            TabelaNova[i] = &sentinela;
+        }
+
+        for (int j = 0; j < tamanhoAtual; j++) // Adicionar os elementos antigos a nova tabela
+        {
+            Noh *rodrigo = Tabela[j];
+            while (rodrigo != &sentinela) // Percorre  a lista encadeada do índice da tabela
+            {
+                Noh *juan = rodrigo->prox;
+                int indice = FuncaoHash(rodrigo->chave);
+                rodrigo->prox = TabelaNova[indice];
+                TabelaNova[indice] = rodrigo;
+                rodrigo = juan;
+            }
+        }
+
         delete[] Tabela;
         Tabela = TabelaNova;
     }
-    void redimencionarDividir(){
-        int tamanhoNovo = tamanhoAtual / 2;
-        Noh **tabelaNova = new Noh*[tamanhoNovo];
-        for (int i = 0; i < tamanhoAtual; i++)
-        {
-            tabelaNova[i] = Tabela[i];
-        }
-        tamanhoAtual = tamanhoNovo;
-        delete[] Tabela;
-        Tabela = tabelaNova;
-    }
-    bool vazio(){
+
+    void imprimir(); // TODO faça você mesmo
+    bool vazio()
+    {
         return totalItens == 0;
     }
-    bool cheio(){
+    bool cheio()
+    {
         return totalItens == tamanhoAtual;
     }
 };
 
+int main()
+{
+    TabelaHash hash;
+    unsigned short escolha;
+    do
+    {
+        cout << "Digite 1 para inserir" << endl;
+        cout << "Digite 2 para remover" << endl;
+        cout << "Digite 3 para sair" << endl;
+        cin >> escolha;
+        int chave;
+        tipoItem item;
 
+        if (escolha == 1)
+        {
+            cout << "Digite uma chave e um item a ser armazenado" << endl;
+            cin >> chave;
+            cin >> item;
+            hash.inserir(chave, item);
+        }
+        else if (escolha == 2)
+        {
+            cout << "Digite uma chave e valor a serem deletados";
+            cin >> chave;
+            cin >> item;
+            hash.remover(chave, item);
+        }
+        else
+        {
+            escolha = 3;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-int main(){
-
-
-
-
-
-
+    } while (escolha != 3);
 
     return 0;
 }
