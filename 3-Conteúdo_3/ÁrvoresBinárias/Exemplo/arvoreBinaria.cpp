@@ -16,6 +16,14 @@ private:
         Noh *FilhoDir;
     };
 
+    void destruir(Noh *n){
+        if(n == nullptr) return;
+
+        destruir(n -> FilhoEsq);
+        destruir(n -> FilhoDir);
+        delete n;
+    }
+
 public:
     Noh *Raiz;
 
@@ -23,7 +31,13 @@ public:
     {
         Raiz = nullptr;
     }
-    ~ArvoreBinaria();
+    ~ArvoreBinaria(){
+        while (vazio())
+        {
+            destruir(Raiz);
+        }
+        
+    }
 
     void inserir(Valoritem item) // Sempre adicionará no fim da árvore
     {
@@ -65,9 +79,10 @@ public:
     }
     bool pertence(Valoritem item)
     {
-        if (vazio())
+        if (vazio()){
             cout << "Arvore Vazia" << endl;
-        return;
+            return false;
+        }
         Noh *procurar = Raiz;
         while (1)
         {
@@ -89,15 +104,59 @@ public:
         }
     }
     // Terão 3 casos onde, remover folha, remover um nó com um filho e revomer um nó com 2 filhos
-    void remover(Valoritem item) // principiante
+    void remover(Valoritem item) // Avançado
     {
-        if (vazio()) return;
-        if (!pertence(item)) return;
-        Noh* aux1 = Raiz;
-        
+        if (vazio())
+            return;
+        if (!pertence(item))
+            return;
+        Noh *aux1 = Raiz;
+        Noh **pai = &Raiz;
+        while (1)
+        {
+            if (item == aux1->item) // Achou
+            {
+                break;
+            }
+            else
+            {
 
+                if (item < aux1->item)
+                {
+                    pai = &aux1 ->FilhoEsq; 
+                    aux1 = aux1->FilhoEsq;
+                }
 
-
+                if (item > aux1->item)
+                {
+                    pai = &aux1 ->FilhoDir;
+                    aux1 = aux1->FilhoDir;
+                }
+            }
+        }
+        if (aux1->FilhoEsq == nullptr) // Nó com 1 filho ou com nenhum
+        {
+            *pai = aux1->FilhoDir;
+            // TODO delete aux1;
+        }else if (aux1->FilhoDir == nullptr) // Nó com 1 filho ou com nenhum
+        {
+            *pai = aux1->FilhoEsq;
+        }
+        else // Nó com 2 filhos
+        {
+            Noh* aux2 = aux1 -> FilhoEsq;
+            Noh** pai2 = &aux2;
+            while(aux2 != nullptr)
+            {
+                pai2 = &aux2->FilhoDir;
+                aux2 = aux2->FilhoDir;
+            }
+            *pai = aux2;
+            aux2->FilhoDir = aux1->FilhoDir;
+            aux2->FilhoEsq = aux1->FilhoEsq;
+            *pai2 = aux2->FilhoEsq;
+        }
+        delete aux1;
     }
     void imprimir(Noh *n)
     {
@@ -136,13 +195,21 @@ int main()
         }
         else if (escolha == 2)
         {
+            if(arvore.vazio()){
+                cout << "arvore vazia" << endl;
+                break;
+            }
             cout << "Digite um item a remover" << endl;
             cin >> item;
             arvore.remover(item);
         }
         else if (escolha == 3)
         {
-            //arvore.imprimir();
+            if(arvore.vazio()){
+                cout << "Arvore vazia" << endl;
+                break;  
+            }
+            arvore.imprimir(arvore.Raiz);
         }
         else
         {
