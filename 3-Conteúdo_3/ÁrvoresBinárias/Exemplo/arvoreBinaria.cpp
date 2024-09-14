@@ -41,6 +41,11 @@ public:
 
     void inserir(Valoritem item) // Sempre adicionará no fim da árvore
     {
+        if (pertence)
+        {
+            return;
+        }
+        
         Noh *NovoNoh = new Noh{nullptr, item, nullptr};
         Noh *procurar = Raiz;
         if (Raiz == nullptr) // Caso 1, Árvore vazia
@@ -76,6 +81,9 @@ public:
                 }
             }
         }
+    }
+    void inserir_se_novo(){
+
     }
     bool pertence(Valoritem item)
     {
