@@ -22,7 +22,7 @@ public:
   void escrever(double item, int m, int n);
   void ler();
   void imprimir();
-  Matriz somar(Matriz rodri);
+  Matriz somar(Matriz resultado);
 };
 
 Matriz::Matriz(int m, int n)

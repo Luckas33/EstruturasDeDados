@@ -81,46 +81,36 @@ public:
     {
         return (chave % tamanhoAtual);
     }
-    void remover(int chave, tipoItem item)
-    {
-        ResConsulta consulta = consultar(chave);
-        if (consulta.achou == false)
-        {
-            return;
-        }
+    void remover(int c){
+        if(totalItens = tamanhoAtual*0.25) redimencionarTamanho(tamanhoAtual/2);
         
-        if (vazio())
-        {
-            cout << "Tabela vazia" << endl;
-            return;
-        }
-        int i = FuncaoHash(chave);
-        Noh *aux1 = Tabela[i];
-        // Caso for o primeiro
-        if (aux1->chave == chave)
-        {
-            Tabela[i] = aux1->prox;
-            delete aux1;
-            return;
-        }
-        // Caso não for o primeiro
-        Noh *buscador;
-        while (aux1 != &sentinela)
-        {
-            if (aux1->prox->item == item)
-            {
-                buscador = aux1->prox;
-                aux1->prox = aux1->prox->prox;
+        if(totalItens == 0) return; // verifica se a tabela é vazia
+        int i = FuncaoHash(c);
+        Noh *atual = Tabela[i]; //cria um nó que vai apontar para o nó a ser excluído
+        Noh *anterior = &sentinela;
+        
+        int tamanho_antigo = tamanhoAtual;
+        int numero_de_itens_old = totalItens;
+
+        while(atual != &sentinela){
+            if(atual->chave == c){
+                if(anterior == &sentinela){
+                    Tabela[i] = atual->prox;
+                    delete atual;
+                    -- totalItens;
+                    return;
+                }
+                anterior->prox = atual->prox;
+                delete atual;
+                -- totalItens;
+                return;
             }
-            aux1 = aux1->prox;
-            delete buscador;
+            anterior = atual;
+            atual = atual->prox;
         }
-        totalItens--;
-        if (totalItens = tamanhoAtual * 0.25)
-        {
-            redimencionarTamanho(tamanhoAtual / 2);
-        }
+        cout << "Chave: " << c << " não encontrada" << endl;
     }
+
     void redimencionarTamanho(int tamanhoNovo)
     {
         Noh **TabelaNova = new Noh *[tamanhoNovo];
@@ -149,7 +139,17 @@ public:
         Tabela = TabelaNova;
     }
 
-    void imprimir(); // TODO faça você mesmo
+    void imprimir(){
+        for(int i = 0; i < tamanhoAtual; i++){
+            cout << "Balde " << i << ": ";
+            Noh *n = Tabela[i];
+            while(n != &sentinela){
+                cout << "(" << n->chave << ", " << n->item << ") -> ";
+                n = n->prox;
+            }
+            cout << "sentinela" << endl;
+        }
+    }
     bool vazio()
     {
         return totalItens == 0;
@@ -185,7 +185,7 @@ int main()
             cout << "Digite uma chave e valor a serem deletados";
             cin >> chave;
             cin >> item;
-            hash.remover(chave, item);
+            hash.remover(chave);       
         }
         else
         {
