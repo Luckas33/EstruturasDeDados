@@ -124,14 +124,14 @@ public:
 
         for (int j = 0; j < tamanhoAtual; j++) // Adicionar os elementos antigos a nova tabela
         {
-            Noh *rodrigo = Tabela[j];
-            while (rodrigo != &sentinela) // Percorre  a lista encadeada do índice da tabela
+            Noh *aux1 = Tabela[j];
+            while (aux1 != &sentinela) // Percorre  a lista encadeada do índice da tabela
             {
-                Noh *juan = rodrigo->prox;
-                int indice = FuncaoHash(rodrigo->chave);
-                rodrigo->prox = TabelaNova[indice];
-                TabelaNova[indice] = rodrigo;
-                rodrigo = juan;
+                Noh *aux2 = aux1->prox;
+                int indice = FuncaoHash(aux1->chave);
+                aux1->prox = TabelaNova[indice];
+                TabelaNova[indice] = aux1;
+                aux1 = aux2;
             }
         }
 
