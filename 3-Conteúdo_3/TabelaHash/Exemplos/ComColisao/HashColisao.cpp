@@ -5,7 +5,7 @@
 // Uma ideia natural para tratar colisões consiste em armazenar as chaves sinônimas em listas encadeadas. Há duas alternativas. As listas podem se encontrar no exterior da tabela ou compartilhar o mesmo espaço da tabela.
 
 // Neste código utilizarei o encadeamento exterior
-//Agradecimentos ao bom jardim
+// Agradecimentos ao bom jardim
 
 #include <iostream>
 using namespace std;
@@ -59,7 +59,26 @@ public:
         Tabela = new Noh *[tamanhoAtual];
         Tabela[0] = &sentinela;
     }
-    ~TabelaHash();
+    ~TabelaHash()
+    {
+        for (int i = 0; i < tamanhoAtual; i++)
+        {
+            Noh *aux = Tabela[i];
+            while (aux != nullptr)
+            {
+                Noh *prox = aux->prox;
+                delete prox;
+                aux = prox;
+            }
+        }
+        delete[] Tabela;
+    }
+
+    int FuncaoHash(int chave)
+    {
+        return (chave % tamanhoAtual);
+    }
+
     void inserir(int chave, tipoItem item)
     {
         ResConsulta consulta = consultar(chave);
@@ -67,7 +86,7 @@ public:
         {
             return;
         }
-        
+
         int i;
         if (cheio())
         {
@@ -77,32 +96,33 @@ public:
         Tabela[i] = new Noh{chave, item, Tabela[i]};
         totalItens++;
     }
-    int FuncaoHash(int chave)
+    void remover(int c)
     {
-        return (chave % tamanhoAtual);
-    }
-    void remover(int c){
-        if(totalItens = tamanhoAtual*0.25) redimencionarTamanho(tamanhoAtual/2);
+        if (totalItens = tamanhoAtual * 0.25)  redimencionarTamanho(tamanhoAtual / 2);
+
+        if (totalItens == 0) return; // verifica se a tabela é vazia
         
-        if(totalItens == 0) return; // verifica se a tabela é vazia
         int i = FuncaoHash(c);
-        Noh *atual = Tabela[i]; //cria um nó que vai apontar para o nó a ser excluído
+        Noh *atual = Tabela[i]; // cria um nó que vai apontar para o nó a ser excluído
         Noh *anterior = &sentinela;
-        
+
         int tamanho_antigo = tamanhoAtual;
         int numero_de_itens_old = totalItens;
 
-        while(atual != &sentinela){
-            if(atual->chave == c){
-                if(anterior == &sentinela){
+        while (atual != &sentinela)
+        {
+            if (atual->chave == c)
+            {
+                if (anterior == &sentinela)
+                {
                     Tabela[i] = atual->prox;
                     delete atual;
-                    -- totalItens;
+                    --totalItens;
                     return;
                 }
                 anterior->prox = atual->prox;
                 delete atual;
-                -- totalItens;
+                --totalItens;
                 return;
             }
             anterior = atual;
@@ -139,11 +159,14 @@ public:
         Tabela = TabelaNova;
     }
 
-    void imprimir(){
-        for(int i = 0; i < tamanhoAtual; i++){
+    void imprimir()
+    {
+        for (int i = 0; i < tamanhoAtual; i++)
+        {
             cout << "Balde " << i << ": ";
             Noh *n = Tabela[i];
-            while(n != &sentinela){
+            while (n != &sentinela)
+            {
                 cout << "(" << n->chave << ", " << n->item << ") -> ";
                 n = n->prox;
             }
@@ -185,7 +208,7 @@ int main()
             cout << "Digite uma chave e valor a serem deletados";
             cin >> chave;
             cin >> item;
-            hash.remover(chave);       
+            hash.remover(chave);
         }
         else
         {
