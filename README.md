@@ -19,4 +19,4 @@ Este repositório contém o material da disciplina **Estruturas de Dados em C++*
 - **Árvore Binária**: Estrutura de dados hierárquica em que cada nó possui até dois filhos, facilitando a organização e busca de dados.
 
 ### 4. Estruturas de Busca Balanceadas
-- **Árvores Balanceadas**: Estruturas como árvores AVL ou rubro-negras, que mantêm uma forma balanceada para garantir operações de busca, inserção e remoção com eficiência logarítmica.
+- **Árvores Balanceadas**: Estruturas como árvores AVL , que mantêm uma forma balanceada para garantir operações de busca, inserção e remoção com eficiência logarítmica.
