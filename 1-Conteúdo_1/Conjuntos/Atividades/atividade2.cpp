@@ -2,7 +2,6 @@
  * @author Lucas
  * @brief Implemente em C++ um conjunto limitado via vetor ordenado, utilizando na função "pertence" o algoritmo de busca binária discutido em sala. Inclua as funções vazio e cheio.
  */
-
 #include <iostream>
 using namespace std;
 
